@@ -33,6 +33,8 @@ DAFTAR_ADMIN = [
     "tinofebrianefendi@students.amikom.ac.id",
     "hasbi@students.amikom.ac.id",
     "alfebriosetianugraha@students.amikom.ac.id"
+    "alditorifpal@students.amikom.ac.id"
+    "bintangbanira@students.amikom.ac.id"
 ]
 
 # ==========================================
