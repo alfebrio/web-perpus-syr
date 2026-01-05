@@ -1,17 +1,23 @@
+import os, json, datetime
 import firebase_admin
 from firebase_admin import credentials, db, auth
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
-import datetime
 
 app = Flask(__name__)
-app.secret_key = 'AIzaSyCDwrHxMzicO0n1RisxwEme0JGnOrYeZwY' 
+
+# SECRET KEY JUGA DARI ENV (AMAN)
+app.secret_key = os.environ.get("FLASK_SECRET_KEY")
 
 # ==========================================
 # 0. KONFIGURASI FIREBASE
 # ==========================================
 if not firebase_admin._apps:
-    # Pastikan path ini sesuai file json Anda
-    cred = credentials.Certificate("firebase/serviceAccountKey.json")
+    service_account = json.loads(
+        os.environ.get("FIREBASE_SERVICE_ACCOUNT")
+    )
+
+    cred = credentials.Certificate(service_account)
+
     firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://perpus-syahroni-default-rtdb.firebaseio.com/'
     })
