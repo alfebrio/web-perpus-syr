@@ -64,7 +64,7 @@
                     </div>
                 </div>
 
-                {% for id, data in buku.items() %}
+                {% for id, data in buku %}
                 <div class="col">
                     <div class="book-card-small">
                         <div class="book-cover-small-wrapper">
@@ -104,7 +104,7 @@
         </div>
     </div>
 
-    {% for id, data in buku.items() %}
+    {% for id, data in buku %}
     <div class="modal fade" id="modalEdit{{ id }}" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
@@ -126,11 +126,13 @@
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-muted">Genre / Kategori</label>
                             <select name="genre" class="form-select">
-                                <option value="Teknologi" {% if data.genre == 'Teknologi' %}selected{% endif %}>Teknologi</option>
+                                <option value="Bisnis" {% if data.genre == 'Bisnis' %}selected{% endif %}>Bisnis</option>
+                                <option value="Edukasi" {% if data.genre == 'Edukasi' %}selected{% endif %}>Edukasi</option>
+                                <option value="Komik" {% if data.genre == 'Komik' %}selected{% endif %}>Komik</option>
+                                <option value="Motivasi" {% if data.genre == 'Motivasi' %}selected{% endif %}>Motivasi</option>
                                 <option value="Novel" {% if data.genre == 'Novel' %}selected{% endif %}>Novel</option>
                                 <option value="Sejarah" {% if data.genre == 'Sejarah' %}selected{% endif %}>Sejarah</option>
-                                <option value="Bisnis" {% if data.genre == 'Bisnis' %}selected{% endif %}>Bisnis</option>
-                                <option value="Komik" {% if data.genre == 'Komik' %}selected{% endif %}>Komik</option>
+                                <option value="Teknologi" {% if data.genre == 'Teknologi' %}selected{% endif %}>Teknologi</option>
                                 <option value="Lainnya" {% if data.genre == 'Lainnya' %}selected{% endif %}>Lainnya</option>
                             </select>
                         </div>
@@ -176,11 +178,13 @@
                             <label class="form-label small fw-bold">Genre / Kategori</label>
                             <select name="genre" class="form-select" required>
                                 <option value="" disabled selected>Pilih Kategori...</option>
-                                <option value="Teknologi">Teknologi</option>
+                                <option value="Bisnis">Bisnis</option>
+                                <option value="Edukasi">Edukasi</option>
+                                <option value="Komik">Komik</option>
+                                <option value="Motivasi">Motivasi</option>
                                 <option value="Novel">Novel</option>
                                 <option value="Sejarah">Sejarah</option>
-                                <option value="Bisnis">Bisnis</option>
-                                <option value="Komik">Komik</option>
+                                <option value="Teknologi">Teknologi</option>
                                 <option value="Lainnya">Lainnya</option>
                             </select>
                         </div>

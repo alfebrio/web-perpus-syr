@@ -6,15 +6,17 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 app = Flask(__name__)
 
 # SECRET KEY JUGA DARI ENV (AMAN)
-app.secret_key = os.environ.get("FLASK_SECRET_KEY")
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-key")
 
 # ==========================================
 # 0. KONFIGURASI FIREBASE
 # ==========================================
 if not firebase_admin._apps:
-    service_account = json.loads(
-        os.environ.get("FIREBASE_SERVICE_ACCOUNT")
-    )
+    service_json = os.environ.get("FIREBASE_SERVICE_ACCOUNT")
+    if not service_json:
+        raise RuntimeError("FIREBASE_SERVICE_ACCOUNT env is missing")
+    
+    service_account = json.loads(service_json)
 
     cred = credentials.Certificate(service_account)
 
@@ -32,8 +34,8 @@ ref_denda_member = db.reference('denda_member')
 DAFTAR_ADMIN = [
     "tinofebrianefendi@students.amikom.ac.id",
     "hasbi@students.amikom.ac.id",
-    "alfebriosetianugraha@students.amikom.ac.id"
-    "alditorifpal@students.amikom.ac.id"
+    "alfebriosetianugraha@students.amikom.ac.id",
+    "alditorifpal@students.amikom.ac.id",
     "bintangbanira@students.amikom.ac.id"
 ]
 
@@ -140,12 +142,9 @@ def data_buku():
 
     semua_buku = ref_buku.get() or {}
 
-    # 🔤 URUTKAN BERDASARKAN JUDUL
-    buku_sorted = dict(
-        sorted(
-            semua_buku.items(),
-            key=lambda item: item[1].get('judul', '').lower()
-        )
+    buku_sorted = sorted(
+        semua_buku.items(),
+        key=lambda item: item[1].get('judul', '').lower()
     )
 
     return render_template(
@@ -217,8 +216,8 @@ def member_area():
         if val.get('uid') == uid:
             pinjaman_saya.append(val)
             
-    aktif = sum(1 for x in pinjaman_saya if x['status'] == 'Dipinjam')
-    history = sum(1 for x in pinjaman_saya if x['status'] in ['Dikembalikan', 'Selesai'])
+    aktif = sum(1 for x in pinjaman_saya if x.get('status') == 'Dipinjam')
+    history = sum(1 for x in pinjaman_saya if x.get('status') in ['Dikembalikan', 'Selesai'])
     
     # --- 2. [BARU] DATA DENDA ---
     semua_denda = ref_denda_member.get() or {}
@@ -290,14 +289,11 @@ def daftar_buku_member():
     if 'user' not in session:
         return redirect(url_for('login'))
 
-    data_buku = ref_buku.get() or {}
+    semua_buku = ref_buku.get() or {}
 
-    # 🔤 URUTKAN JUGA UNTUK MEMBER
-    buku_sorted = dict(
-        sorted(
-            data_buku.items(),
-            key=lambda item: item[1].get('judul', '').lower()
-        )
+    buku_sorted = sorted(
+        semua_buku.items(),
+        key=lambda item: item[1].get('judul', '').lower()
     )
 
     return render_template(
