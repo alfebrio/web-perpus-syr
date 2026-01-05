@@ -135,9 +135,24 @@ def dashboard():
 # ==========================================
 @app.route('/data_buku')
 def data_buku():
-    if session.get('role') != 'admin': return redirect(url_for('member_area'))
+    if session.get('role') != 'admin':
+        return redirect(url_for('member_area'))
+
     semua_buku = ref_buku.get() or {}
-    return render_template('data_buku.html', buku=semua_buku, nama_user=session['user'])
+
+    # 🔤 URUTKAN BERDASARKAN JUDUL
+    buku_sorted = dict(
+        sorted(
+            semua_buku.items(),
+            key=lambda item: item[1].get('judul', '').lower()
+        )
+    )
+
+    return render_template(
+        'data_buku.html',
+        buku=buku_sorted,
+        nama_user=session['user']
+    )
 
 @app.route('/tambah', methods=['POST'])
 def tambah_buku():
@@ -272,9 +287,24 @@ def katalog_buku():
 
 @app.route('/member/daftar-buku')
 def daftar_buku_member():
-    if 'user' not in session: return redirect(url_for('login'))
+    if 'user' not in session:
+        return redirect(url_for('login'))
+
     data_buku = ref_buku.get() or {}
-    return render_template('daftar_buku_member.html', buku=data_buku, nama_user=session.get('user'))
+
+    # 🔤 URUTKAN JUGA UNTUK MEMBER
+    buku_sorted = dict(
+        sorted(
+            data_buku.items(),
+            key=lambda item: item[1].get('judul', '').lower()
+        )
+    )
+
+    return render_template(
+        'daftar_buku_member.html',
+        buku=buku_sorted,
+        nama_user=session.get('user')
+    )
 
 # ==========================================
 #  ROUTE DENDA MEMBER
