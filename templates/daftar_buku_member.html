@@ -11,11 +11,10 @@
         .genre-section { transition: all 0.3s ease; }
         .book-item { transition: transform 0.2s; }
         .book-item:hover { transform: translateY(-5px); }
-        /* Style tambahan untuk bar hijau agar lebih presisi */
         .genre-bar {
             width: 6px;
             height: 28px;
-            background-color: #198754; /* Warna Hijau Success */
+            background-color: #198754;
             border-radius: 10px;
             display: inline-block;
         }
@@ -23,96 +22,95 @@
 </head>
 <body class="dashboard-body">
 
-    <div class="sidebar">
-        <div class="sidebar-logo">
-            <i class="fas fa-book-reader text-success me-2"></i> Perpus-Syr
+<div class="sidebar">
+    <div class="sidebar-logo">
+        <i class="fas fa-book-reader text-success me-2"></i> Perpus-Syr
+    </div>
+    <nav class="nav flex-column">
+        <small class="text-uppercase text-muted fw-bold mb-3 ms-3" style="font-size: 11px;">Menu Member</small>
+        <a class="nav-item" href="{{ url_for('member_area') }}">
+            <i class="fas fa-th-large"></i> Dashboard Saya
+        </a>
+        <a class="nav-item active" href="#">
+            <i class="fas fa-search"></i> Daftar Buku
+        </a>
+        <a class="nav-item" href="{{ url_for('member_denda') }}">
+            <i class="fas fa-money-bill-wave"></i> Denda
+        </a>
+        <a class="nav-item" href="{{ url_for('member_area') }}#history">
+            <i class="fas fa-history"></i> Riwayat
+        </a>
+        <small class="text-uppercase text-muted fw-bold mt-4 mb-3 ms-3" style="font-size: 11px;">Akun</small>
+        <a class="nav-item" href="{{ url_for('logout') }}" style="color: #dc3545;">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </nav>
+</div>
+
+<div class="main-content">
+    <div class="dashboard-header-bg header-member">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="text-white-50 mb-1">Pustaka Digital</h5>
+                <h2 class="fw-bold text-white">Katalog Buku</h2>
+            </div>
+            <div class="bg-white bg-opacity-25 p-1 rounded-pill d-flex shadow-sm" style="width: 300px;">
+                <input type="text" id="searchInput" class="form-control border-0 bg-transparent text-white placeholder-white" placeholder="Cari judul atau penulis...">
+                <button class="btn btn-light rounded-pill text-success"><i class="fas fa-search"></i></button>
+            </div>
         </div>
-        <nav class="nav flex-column">
-            <small class="text-uppercase text-muted fw-bold mb-3 ms-3" style="font-size: 11px;">Menu Member</small>
-            <a class="nav-item" href="{{ url_for('member_area') }}">
-                <i class="fas fa-th-large"></i> Dashboard Saya
-            </a>
-            <a class="nav-item active" href="#">
-                <i class="fas fa-search"></i> Daftar Buku
-            </a>
-            <a class="nav-item" href="{{ url_for('member_denda') }}">
-                <i class="fas fa-money-bill-wave"></i> Denda
-            </a>
-            <a class="nav-item" href="{{ url_for('member_area') }}#history">
-                <i class="fas fa-history"></i> Riwayat
-            </a>
-            <small class="text-uppercase text-muted fw-bold mt-4 mb-3 ms-3" style="font-size: 11px;">Akun</small>
-            <a class="nav-item" href="{{ url_for('logout') }}" style="color: #dc3545;">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-        </nav>
     </div>
 
-    <div class="main-content">
-        <div class="dashboard-header-bg header-member">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h5 class="text-white-50 mb-1">Pustaka Digital</h5>
-                    <h2 class="fw-bold text-white">Katalog Buku</h2>
-                </div>
-                <div class="bg-white bg-opacity-25 p-1 rounded-pill d-flex shadow-sm" style="width: 300px;">
-                    <input type="text" id="searchInput" class="form-control border-0 bg-transparent text-white placeholder-white" placeholder="Cari judul atau penulis..." style="color: white;">
-                    <button class="btn btn-light rounded-pill text-success"><i class="fas fa-search"></i></button>
-                </div>
-            </div>
+    <div class="container-fluid px-4" style="margin-top: -60px; position: relative; z-index: 10;">
+        <div class="d-flex gap-2 mb-4 overflow-auto pb-2" id="filterContainer">
+            <button class="btn btn-light text-success fw-bold shadow-sm rounded-pill px-4 btn-sm filter-btn active" data-genre="all">Semua</button>
+            <button class="btn btn-white text-dark border shadow-sm rounded-pill px-4 btn-sm filter-btn" data-genre="Teknologi">Teknologi</button>
+            <button class="btn btn-white text-dark border shadow-sm rounded-pill px-4 btn-sm filter-btn" data-genre="Novel">Novel</button>
+            <button class="btn btn-white text-dark border shadow-sm rounded-pill px-4 btn-sm filter-btn" data-genre="Sejarah">Sejarah</button>
+            <button class="btn btn-white text-dark border shadow-sm rounded-pill px-4 btn-sm filter-btn" data-genre="Bisnis">Bisnis</button>
+            <button class="btn btn-white text-dark border shadow-sm rounded-pill px-4 btn-sm filter-btn" data-genre="Komik">Komik</button>
         </div>
 
-        <div class="container-fluid px-4" style="margin-top: -60px; position: relative; z-index: 10;">
-            <div class="d-flex gap-2 mb-4 overflow-auto pb-2" id="filterContainer">
-                <button class="btn btn-light text-success fw-bold shadow-sm rounded-pill px-4 btn-sm filter-btn active" data-genre="all">Semua</button>
-                <button class="btn btn-white text-dark border shadow-sm rounded-pill px-4 btn-sm filter-btn" data-genre="Teknologi">Teknologi</button>
-                <button class="btn btn-white text-dark border shadow-sm rounded-pill px-4 btn-sm filter-btn" data-genre="Novel">Novel</button>
-                <button class="btn btn-white text-dark border shadow-sm rounded-pill px-4 btn-sm filter-btn" data-genre="Sejarah">Sejarah</button>
-                <button class="btn btn-white text-dark border shadow-sm rounded-pill px-4 btn-sm filter-btn" data-genre="Bisnis">Bisnis</button>
-                <button class="btn btn-white text-dark border shadow-sm rounded-pill px-4 btn-sm filter-btn" data-genre="Komik">Komik</button>
-            </div>
+        <div id="catalogWrapper">
+            {% if buku %}
+                {% set genre_list = [] %}
+                {% for data in buku %}
+                    {% set current_genre = data.get('genre') if data.get('genre') else 'Umum' %}
+                    {% if current_genre not in genre_list %}
+                        {% set _ = genre_list.append(current_genre) %}
+                    {% endif %}
+                {% endfor %}
 
-            <div id="catalogWrapper">
-                {% if buku %}
-                    {% set genre_list = [] %}
-                    {% for id, data in buku.items() %}
-                        {% set current_genre = data.genre if data.genre else 'Umum' %}
-                        {% if current_genre not in genre_list %}
-                            {% set _ = genre_list.append(current_genre) %}
-                        {% endif %}
-                    {% endfor %}
-
-                    {% for gnr in genre_list|sort %}
+                {% for gnr in genre_list|sort %}
                     <div class="genre-section mb-5" data-genre-block="{{ gnr }}">
                         <div class="d-flex align-items-center mb-4">
                             <div class="genre-bar me-3"></div>
-                            <h4 class="fw-bold mb-0 text-dark" style="font-family: 'DM Sans', sans-serif;">{{ gnr }}</h4>
+                            <h4 class="fw-bold mb-0 text-dark">{{ gnr }}</h4>
                         </div>
-                        
                         <div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-3">
-                            {% for id, data in buku.items() %}
-                                {% set b_genre = data.genre if data.genre else 'Umum' %}
+                            {% for data in buku %}
+                                {% set b_genre = data.get('genre') if data.get('genre') else 'Umum' %}
                                 {% if b_genre == gnr %}
+                                {% set id = data.get('id') %}
                                 <div class="col book-item" data-genre="{{ b_genre }}">
                                     <div class="book-card-small">
                                         <div class="book-cover-small-wrapper">
-                                            <img src="{{ data.url_gambar if data.url_gambar else 'https://via.placeholder.com/150x220?text=No+Cover' }}" 
+                                            <img src="{{ data.get('url_gambar') if data.get('url_gambar') else 'https://via.placeholder.com/150x220?text=No+Cover' }}" 
                                                  class="book-cover-small" alt="Cover"
                                                  onerror="this.onerror=null; this.src='https://via.placeholder.com/150x220?text=Error';">
-                                            
-                                            {% if data.stok > 0 %}
+                                            {% if data.get('stok',0) > 0 %}
                                                 <span class="badge badge-overlay text-success">
-                                                    <i class="fas fa-check-circle me-1"></i> Ready: {{ data.stok }}
+                                                    <i class="fas fa-check-circle me-1"></i> Ready: {{ data.get('stok') }}
                                                 </span>
                                             {% else %}
                                                 <span class="badge badge-overlay text-danger">Habis</span>
                                             {% endif %}
                                         </div>
                                         <div class="card-body-small">
-                                            <h6 class="card-title-small" title="{{ data.judul }}">{{ data.judul }}</h6>
-                                            <p class="card-author-small mb-2">{{ data.penulis }}</p>
+                                            <h6 class="card-title-small" title="{{ data.get('judul') }}">{{ data.get('judul') }}</h6>
+                                            <p class="card-author-small mb-2">{{ data.get('penulis') }}</p>
                                             <div class="mt-auto">
-                                                {% if data.stok > 0 %}
+                                                {% if data.get('stok',0) > 0 %}
                                                     <button class="btn btn-success w-100 btn-sm rounded-3 py-2 fw-bold shadow-sm" 
                                                             data-bs-toggle="modal" data-bs-target="#modalPinjam{{ id }}">
                                                         Pinjam Sekarang
@@ -128,112 +126,112 @@
                             {% endfor %}
                         </div>
                     </div>
-                    {% endfor %}
-                {% else %}
-                    <div class="text-center py-5 text-muted">
-                        <p>Belum ada koleksi buku tersedia.</p>
-                    </div>
-                {% endif %}
-            </div>
+                {% endfor %}
+            {% else %}
+                <div class="text-center py-5 text-muted">
+                    <p>Belum ada koleksi buku tersedia.</p>
+                </div>
+            {% endif %}
+        </div>
 
-            <div id="noResults" class="text-center py-5 text-muted d-none">
-                <i class="fas fa-search fa-3x mb-3 opacity-25"></i>
-                <p>Buku tidak ditemukan.</p>
-            </div>
+        <div id="noResults" class="text-center py-5 text-muted d-none">
+            <i class="fas fa-search fa-3x mb-3 opacity-25"></i>
+            <p>Buku tidak ditemukan.</p>
         </div>
     </div>
+</div>
 
-    {% if buku %}
-        {% for id, data in buku.items() %}
-        {% if data.stok > 0 %}
-        <div class="modal fade" id="modalPinjam{{ id }}" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-sm">
-                <div class="modal-content border-0 shadow">
-                    <div class="modal-header border-0 pb-0">
-                        <h6 class="modal-title fw-bold">Konfirmasi Pinjam</h6>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <div class="mb-3 bg-light rounded p-2 d-inline-block">
-                            <img src="{{ data.url_gambar if data.url_gambar else 'https://via.placeholder.com/100x150' }}" 
-                                 class="rounded shadow-sm" style="height: 120px; width: auto;">
+{% if buku %}
+    {% for data in buku %}
+        {% if data.get('stok',0) > 0 %}
+            {% set id = data.get('id') %}
+            <div class="modal fade" id="modalPinjam{{ id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-sm">
+                    <div class="modal-content border-0 shadow">
+                        <div class="modal-header border-0 pb-0">
+                            <h6 class="modal-title fw-bold">Konfirmasi Pinjam</h6>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
-                        <h6 class="fw-bold text-dark mb-1">{{ data.judul }}</h6>
-                        <p class="small text-muted mb-0">Durasi: <strong>7 Hari</strong></p>
-                    </div>
-                    <div class="modal-footer border-0 pt-0 px-3 pb-3">
-                        <button type="button" class="btn btn-light btn-sm flex-grow-1" data-bs-dismiss="modal">Batal</button>
-                        <form action="{{ url_for('pinjam_buku', buku_id=id) }}" method="POST" style="flex-grow: 1;">
-                             <button type="submit" class="btn btn-success btn-sm w-100 fw-bold">Ya, Pinjam</button>
-                        </form>
+                        <div class="modal-body text-center">
+                            <div class="mb-3 bg-light rounded p-2 d-inline-block">
+                                <img src="{{ data.get('url_gambar') if data.get('url_gambar') else 'https://via.placeholder.com/100x150' }}" 
+                                     class="rounded shadow-sm" style="height: 120px; width: auto;">
+                            </div>
+                            <h6 class="fw-bold text-dark mb-1">{{ data.get('judul') }}</h6>
+                            <p class="small text-muted mb-0">Durasi: <strong>7 Hari</strong></p>
+                        </div>
+                        <div class="modal-footer border-0 pt-0 px-3 pb-3">
+                            <button type="button" class="btn btn-light btn-sm flex-grow-1" data-bs-dismiss="modal">Batal</button>
+                            <form action="{{ url_for('pinjam_buku', buku_id=id) }}" method="POST" style="flex-grow: 1;">
+                                 <button type="submit" class="btn btn-success btn-sm w-100 fw-bold">Ya, Pinjam</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         {% endif %}
-        {% endfor %}
-    {% endif %}
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% endfor %}
+{% endif %}
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('searchInput');
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            const bookItems = document.querySelectorAll('.book-item');
-            const genreSections = document.querySelectorAll('.genre-section');
-            const noResults = document.getElementById('noResults');
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const bookItems = document.querySelectorAll('.book-item');
+    const genreSections = document.querySelectorAll('.genre-section');
+    const noResults = document.getElementById('noResults');
 
-            let activeGenre = 'all';
+    let activeGenre = 'all';
 
-            function filterBooks() {
-                const searchTerm = searchInput.value.toLowerCase().trim();
-                let globalHasVisibleBooks = false;
+    function filterBooks() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        let globalHasVisibleBooks = false;
 
-                bookItems.forEach(item => {
-                    const title = item.querySelector('.card-title-small').textContent.toLowerCase();
-                    const author = item.querySelector('.card-author-small').textContent.toLowerCase();
-                    const genre = item.getAttribute('data-genre');
+        bookItems.forEach(item => {
+            const title = item.querySelector('.card-title-small').textContent.toLowerCase();
+            const author = item.querySelector('.card-author-small').textContent.toLowerCase();
+            const genre = item.getAttribute('data-genre');
 
-                    const matchGenre = (activeGenre === 'all' || genre === activeGenre);
-                    const matchSearch = (title.includes(searchTerm) || author.includes(searchTerm));
+            const matchGenre = (activeGenre === 'all' || genre === activeGenre);
+            const matchSearch = (title.includes(searchTerm) || author.includes(searchTerm));
 
-                    if (matchGenre && matchSearch) {
-                        item.classList.remove('d-none');
-                        globalHasVisibleBooks = true;
-                    } else {
-                        item.classList.add('d-none');
-                    }
-                });
-
-                genreSections.forEach(section => {
-                    const visibleBooksInSection = section.querySelectorAll('.book-item:not(.d-none)').length;
-                    if (visibleBooksInSection > 0) {
-                        section.classList.remove('d-none');
-                    } else {
-                        section.classList.add('d-none');
-                    }
-                });
-
-                noResults.classList.toggle('d-none', globalHasVisibleBooks);
+            if (matchGenre && matchSearch) {
+                item.classList.remove('d-none');
+                globalHasVisibleBooks = true;
+            } else {
+                item.classList.add('d-none');
             }
-
-            searchInput.addEventListener('input', filterBooks);
-
-            filterButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    filterButtons.forEach(b => {
-                        b.classList.remove('btn-light', 'text-success', 'fw-bold', 'active');
-                        b.classList.add('btn-white', 'text-dark', 'border');
-                    });
-                    this.classList.remove('btn-white', 'text-dark', 'border');
-                    this.classList.add('btn-light', 'text-success', 'fw-bold', 'active');
-
-                    activeGenre = this.getAttribute('data-genre');
-                    filterBooks();
-                });
-            });
         });
-    </script>
+
+        genreSections.forEach(section => {
+            const visibleBooksInSection = section.querySelectorAll('.book-item:not(.d-none)').length;
+            if (visibleBooksInSection > 0) {
+                section.classList.remove('d-none');
+            } else {
+                section.classList.add('d-none');
+            }
+        });
+
+        noResults.classList.toggle('d-none', globalHasVisibleBooks);
+    }
+
+    searchInput.addEventListener('input', filterBooks);
+
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            filterButtons.forEach(b => {
+                b.classList.remove('btn-light', 'text-success', 'fw-bold', 'active');
+                b.classList.add('btn-white', 'text-dark', 'border');
+            });
+            this.classList.remove('btn-white', 'text-dark', 'border');
+            this.classList.add('btn-light', 'text-success', 'fw-bold', 'active');
+
+            activeGenre = this.getAttribute('data-genre');
+            filterBooks();
+        });
+    });
+});
+</script>
 </body>
 </html>
