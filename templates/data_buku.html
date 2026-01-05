@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Buku | Admin Perpus-Syr</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-body">
+
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-book-open text-primary me-2"></i> Perpus-Syr
+        </div>
+        <nav class="nav flex-column">
+            <small class="text-uppercase text-muted fw-bold mb-3 ms-3" style="font-size: 11px;">Master Data</small>
+            <a class="nav-item" href="{{ url_for('dashboard') }}">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a class="nav-item active" href="#">
+                <i class="fas fa-book"></i> Data Buku
+            </a>
+                        <a class="nav-item" href="{{ url_for('admin_peminjaman') }}">
+                <i class="fas fa-exchange-alt"></i> Pinjaman
+            </a>
+
+            <small class="text-uppercase text-muted fw-bold mt-4 mb-3 ms-3" style="font-size: 11px;">Keuangan</small>
+            <a class="nav-item" href="{{ url_for('admin_denda_page') }}">
+                <i class="fas fa-money-bill-wave"></i> Kelola Denda
+            </a>
+            <small class="text-uppercase text-muted fw-bold mt-4 mb-3 ms-3" style="font-size: 11px;">Akun</small>
+            <a class="nav-item" href="{{ url_for('logout') }}" style="color: #dc3545;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="dashboard-header-bg">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="text-white-50 mb-1">Manajemen Koleksi</h5>
+                    <h2 class="fw-bold text-white">Data Buku</h2>
+                </div>
+                <div class="d-flex align-items-center bg-white bg-opacity-25 rounded-pill px-3 py-2 text-white">
+                    <span class="fw-bold small">{{ nama_user }} (Admin)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid px-4" style="margin-top: -60px; position: relative; z-index: 10;">
+            
+            <div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-3">
+                
+                <div class="col">
+                    <div class="add-card-small" data-bs-toggle="modal" data-bs-target="#modalTambah">
+                        <div class="icon-circle bg-white shadow-sm text-primary mb-3" style="width: 50px; height: 50px; border-radius: 50%; display:flex; align-items:center; justify-content:center;">
+                            <i class="fas fa-plus fa-lg"></i>
+                        </div>
+                        <h6 class="fw-bold small mb-1">Tambah Buku</h6>
+                        <span class="text-muted" style="font-size: 0.7rem;">Klik di sini</span>
+                    </div>
+                </div>
+
+                {% for id, data in buku.items() %}
+                <div class="col">
+                    <div class="book-card-small">
+                        <div class="book-cover-small-wrapper">
+                            <img src="{{ data.url_gambar if data.url_gambar else 'https://via.placeholder.com/150x220?text=No+Cover' }}" 
+                                 class="book-cover-small" 
+                                 alt="Cover Buku"
+                                 onerror="this.onerror=null; this.src='https://via.placeholder.com/150x220?text=Error';">
+                            
+                            <span class="badge badge-overlay">
+                                Stok: {{ data.stok }}
+                            </span>
+                        </div>
+                        
+                        <div class="card-body-small">
+                            <div class="mb-1">
+                                <span class="badge bg-light text-secondary border" style="font-size: 0.65rem;">
+                                    {{ data.genre if data.genre else 'Umum' }}
+                                </span>
+                            </div>
+                            
+                            <h6 class="card-title-small" title="{{ data.judul }}">{{ data.judul }}</h6>
+                            <small class="card-author-small"><i class="fas fa-pen-nib me-1 opacity-50"></i> {{ data.penulis }}</small>
+                            
+                            <div class="d-flex gap-2 mt-auto">
+                                <button class="btn btn-sm btn-primary flex-grow-1 py-2 rounded-3 fw-bold" style="font-size: 0.75rem;" data-bs-toggle="modal" data-bs-target="#modalEdit{{ id }}">
+                                    Edit
+                                </button>
+                                <a href="{{ url_for('hapus_buku', id=id) }}" class="btn btn-sm btn-light text-danger py-2 px-3 rounded-3 border" onclick="return confirm('Yakin ingin menghapus buku ini?')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% for id, data in buku.items() %}
+    <div class="modal fade" id="modalEdit{{ id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-0 pb-0">
+                    <h6 class="modal-title fw-bold">Edit Buku</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="{{ url_for('update_buku', id=id) }}" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Judul</label>
+                            <input type="text" name="judul" class="form-control" value="{{ data.judul }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Penulis</label>
+                            <input type="text" name="penulis" class="form-control" value="{{ data.penulis }}" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Genre / Kategori</label>
+                            <select name="genre" class="form-select">
+                                <option value="Teknologi" {% if data.genre == 'Teknologi' %}selected{% endif %}>Teknologi</option>
+                                <option value="Novel" {% if data.genre == 'Novel' %}selected{% endif %}>Novel</option>
+                                <option value="Sejarah" {% if data.genre == 'Sejarah' %}selected{% endif %}>Sejarah</option>
+                                <option value="Bisnis" {% if data.genre == 'Bisnis' %}selected{% endif %}>Bisnis</option>
+                                <option value="Komik" {% if data.genre == 'Komik' %}selected{% endif %}>Komik</option>
+                                <option value="Lainnya" {% if data.genre == 'Lainnya' %}selected{% endif %}>Lainnya</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">URL Gambar</label>
+                            <input type="text" name="url_gambar" class="form-control" value="{{ data.url_gambar }}">
+                            <small class="text-muted" style="font-size: 10px;">Gunakan link gambar langsung (.jpg/.png)</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Stok</label>
+                            <input type="number" name="stok" class="form-control" value="{{ data.stok }}" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 pt-0">
+                        <button type="submit" class="btn btn-primary w-100 rounded-3">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="modal fade" id="modalTambah" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold">Tambah Buku Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="{{ url_for('tambah_buku') }}" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Judul Buku</label>
+                            <input type="text" name="judul" class="form-control" placeholder="Contoh: Laskar Pelangi" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Penulis</label>
+                            <input type="text" name="penulis" class="form-control" placeholder="Nama Penulis" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Genre / Kategori</label>
+                            <select name="genre" class="form-select" required>
+                                <option value="" disabled selected>Pilih Kategori...</option>
+                                <option value="Teknologi">Teknologi</option>
+                                <option value="Novel">Novel</option>
+                                <option value="Sejarah">Sejarah</option>
+                                <option value="Bisnis">Bisnis</option>
+                                <option value="Komik">Komik</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">URL Gambar Sampul</label>
+                            <input type="text" name="url_gambar" class="form-control" placeholder="https://...">
+                            <small class="text-muted" style="font-size: 10px;">Klik kanan gambar di Google -> Copy Image Address</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Stok Awal</label>
+                            <input type="number" name="stok" class="form-control" value="1" min="1" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary px-4">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

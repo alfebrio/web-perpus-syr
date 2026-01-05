@@ -1,0 +1,654 @@
+/* --- VARIABLES --- */
+:root {
+    /* warna */
+    --primary-blue: #2E0249; /* Ungu */
+    --accent-blue: #A91079;
+    --login-yellow: #FFE492;
+    --white: #ffffff;
+    --text-dark: #212529;
+    
+    /* DEFINISI DUA FONT */
+    --font-heading: 'DM Sans', sans-serif; /* Untuk Judul & Logo */
+    --font-body: 'Inter', sans-serif;      /* Untuk Navbar & Teks Biasa */
+}
+
+body {
+    font-family: var(--font-body); /* Default pakai Inter agar bersih */
+    background-color: var(--white);
+    color: var(--text-dark);
+    font-weight: 400;
+    line-height: 1.6; /* Spasi baris lebih lega seperti di gambar */
+    overflow-x: hidden;
+}
+
+/* --- TYPOGRAPHY SETUP --- */
+
+/* 1. NAVBAR (Gunakan Inter agar tegas & terbaca jelas) */
+.navbar {
+    font-family: var(--font-body); 
+}
+
+.navbar-brand {
+    font-family: var(--font-heading); /* Kecuali Logo, pakai DM Sans */
+    font-weight: 800; /* Extra Bold */
+    letter-spacing: -0.5px;
+}
+
+.nav-link {
+    font-weight: 500; /* Medium weight, jangan terlalu tebal */
+    font-size: 0.95rem; /* Ukuran sedikit lebih kecil agar elegan */
+    letter-spacing: -0.2px;
+}
+
+/* 2. TOMBOL (Inter agar teks instruksi jelas) */
+.btn {
+    font-family: var(--font-body);
+    font-weight: 500;
+    letter-spacing: -0.2px;
+}
+
+/* 3. JUDUL BESAR (DM Sans agar estetik) */
+h1, h2, h3, h4, h5, h6, .hero-title {
+    font-family: var(--font-heading);
+    color: inherit;
+}
+
+.hero-title {
+    font-weight: 700; 
+    letter-spacing: -1px; /* Rapatkan sedikit huruf judul besar */
+}
+
+.display-5 {
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+/* 4. TEKS PARAGRAF (Inter) */
+p.lead, .hero-text {
+    font-family: var(--font-body);
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+/* --- UTILITIES --- */
+.bg-custom-blue { background-color: var(--primary-blue) !important; }
+.fw-extra-bold { font-weight: 800; }
+.fs-xs { font-size: 0.75rem; }
+
+/* --- CUSTOM NAVBAR BRAND --- */
+
+/* 1. Mengatur Ukuran Teks Judul */
+.navbar-brand {
+    font-size: 2rem !important; /* Diperbesar (sebelumnya sktr 1.75rem) */
+    font-weight: 800; /* Lebih tebal agar tegas */
+    letter-spacing: -0.5px; /* Sedikit dirapatkan agar modern */
+}
+
+/* 2. Mengatur Logo Gambar */
+.navbar-brand img {
+    height: 55px; /* Samakan dengan yang di HTML */
+    width: auto;
+    transition: all 0.3s ease;
+}
+
+/* 3. Penyesuaian Responsif (HP) */
+/* Agar di HP logo tidak kegedean dan menuhin layar */
+@media (max-width: 991px) {
+    .navbar-brand {
+        font-size: 1.5rem !important; /* Teks mengecil di HP */
+    }
+    
+    .navbar-brand img {
+        height: 40px; /* Logo mengecil di HP */
+    }
+}
+
+/* --- BUTTONS --- */
+.btn-login {
+    background-color: var(--login-yellow);
+    color: var(--primary-blue);
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 10px 24px;
+    border: none;
+    transition: all 0.3s ease;
+}
+.btn-login:hover { background-color: #ffd560; transform: translateY(-2px); }
+
+.btn-primary-custom {
+    background-color: var(--accent-blue);
+    color: var(--white);
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 12px 24px;
+    border: none;
+    transition: all 0.3s ease;
+}
+.btn-primary-custom:hover { background-color: #3a8bdb; color: var(--white); transform: translateY(-2px); }
+
+/* --- HERO SECTION --- */
+.hero-section {
+    background-color: var(--primary-blue);
+    /* Min-height 100vh memastikan hero memenuhi layar penuh saat awal buka */
+    min-height: 110vh; 
+    padding-top: 80px; /* Kompensasi Navbar Fixed */
+    padding-bottom: 0;
+}
+
+.hero-title { font-size: 3.5rem; line-height: 1.15; }
+.hero-img { max-width: 100%; height: auto; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15)); }
+
+/* --- WAVE TRANSITION (SIMPEL) --- */
+.custom-shape-divider-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    z-index: 1;
+    /* Gunakan 180deg agar Biru terlihat melengkung ke bawah */
+    /* Gunakan 0deg jika ingin Putih yang melengkung ke atas */
+    transform: rotate(180deg); 
+}
+
+.custom-shape-divider-bottom svg {
+    position: relative;
+    display: block;
+    width: calc(133% + 1.3px); /* Sedikit diperlebar agar smooth saat resize */
+    height: 110px; /* Tinggi gelombang sedang */
+}
+
+.custom-shape-divider-bottom .shape-fill {
+    fill: #FFFFFF; /* Warna Putih */
+}
+
+/* FIX RESPONSIVE WAVE */
+@media (max-width: 991px) {
+    .custom-shape-divider-bottom svg {
+        width: calc(150% + 1.3px);
+        height: 70px; /* Lebih pendek di HP */
+    }
+}
+
+/* --- CONTENT SECTIONS --- */
+.feature-section, .work-together-section {
+    position: relative;
+    background-color: var(--white);
+    overflow: hidden;
+}
+
+.feature-section img, .work-together-section img {
+    max-width: 100%;
+    height: auto;
+}
+
+.bg-warning { background-color: var(--login-yellow) !important; }
+
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 991px) {
+    /* Navbar Mobile */
+    .navbar-collapse {
+        background: var(--primary-blue);
+        padding: 20px;
+        margin-top: 10px;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+    
+    /* Hero Mobile */
+    .hero-section {
+        min-height: auto; /* Tidak perlu full screen di HP agar konten bawah mudah diakses */
+        padding-top: 100px;
+        padding-bottom: 150px; /* Ruang lebih untuk wave */
+        text-align: center;
+    }
+    .hero-title { font-size: 2.5rem; }
+    .hero-buttons { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+    .hero-buttons .btn { width: 100%; margin-right: 0 !important; }
+    .hero-img { margin-top: 40px; width: 80%; }
+    
+    /* Content Mobile */
+    .feature-section, .work-together-section { text-align: center; padding-top: 3rem !important; }
+    .display-5 { font-size: 2.2rem; }
+    
+    /* Wave Mobile */
+    .custom-shape-divider-bottom svg { height: 80px; }
+}
+
+/* --- DASHBOARD LAYOUT (SIPERPUS STYLE) --- */
+body.dashboard-body {
+    background-color: #F4F7FE; /* Abu-abu muda bersih */
+    overflow-x: hidden;
+}
+
+/* 1. SIDEBAR */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 30px 20px;
+    z-index: 100;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.02);
+}
+
+.sidebar-logo {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    margin-bottom: 8px;
+    color: #A3AED0; /* Warna teks menu non-aktif */
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+
+.nav-item:hover, .nav-item.active {
+    background-color: var(--primary-blue); /* Aktif jadi Ungu */
+    color: white;
+    box-shadow: 0 5px 15px rgba(46, 2, 73, 0.2);
+}
+
+.nav-item i {
+    width: 24px;
+    margin-right: 10px;
+}
+
+/* 2. MAIN CONTENT WRAPPER */
+.main-content {
+    margin-left: 250px; /* Memberi ruang untuk sidebar */
+    padding: 0;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* 3. PURPLE HEADER BACKGROUND (Lengkung) */
+.dashboard-header-bg {
+    background-color: var(--primary-blue);
+    height: 300px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    padding: 40px;
+    color: white;
+    position: relative;
+}
+
+/* 4. STATS CARDS (Mengambang) */
+.stats-container {
+    margin-top: -100px;
+    padding: 0 40px;
+    position: relative; /* Wajib ada */
+    z-index: 10;        /* Agar muncul di atas background ungu */
+}
+
+.stat-card-new {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* Shadow sedikit dipertegas */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    transition: transform 0.2s;
+    border: 1px solid rgba(0,0,0,0.02); /* Border halus */
+}
+
+.stat-card-new:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+/* 5. TABLE CARD */
+.content-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    margin: 30px 40px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+}
+
+/* Responsif untuk HP */
+@media (max-width: 991px) {
+    .sidebar { display: none; } /* Sembunyikan sidebar di HP (bisa diganti toggle nanti) */
+    .main-content { margin-left: 0; }
+    .stats-container, .dashboard-header-bg, .content-card { padding-left: 20px; padding-right: 20px; }
+}
+
+/* --- HALAMAN LOGIN & REGISTER --- */
+.login-body {
+    background-color: var(--primary-blue); /* Pastikan var ini ada, atau ganti kode warna #4e73df */
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.auth-card {
+    background: white;
+    padding: 3rem;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.logo-text {
+    font-family: 'DM Sans', sans-serif; /* Sesuaikan dengan font heading Anda */
+    color: var(--primary-blue);
+    font-weight: 800;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+/* Tombol Google Custom */
+.btn-google-custom {
+    background-color: white;
+    color: #333;
+    border: 2px solid #eee;
+    border-radius: 12px;
+    padding: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.3s;
+    width: 100%; /* Agar tombol selebar kartu */
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+}
+
+.btn-google-custom:hover {
+    background-color: #f8f9fa;
+    border-color: #ddd;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* --- MEMBER AREA STYLES --- */
+
+/* Header Khusus Member (Hijau) */
+.header-member {
+    background: linear-gradient(270deg, #2E0249 40%, #72f79e 120%) !important;
+}
+
+/* Warna-warni Ikon Statistik */
+.icon-bg-green {
+    background-color: #d1fae5;
+    color: #04ca77;
+}
+
+.icon-bg-blue {
+    background-color: #dbeafe;
+    color: #04ca77;
+}
+
+.icon-bg-red {
+    background-color: #fee2e2;
+    color: #04ca77;
+}
+
+/* Badge Status Kustom */
+.badge-active {
+    background-color: #fef3c7; /* Kuning muda */
+    color: #92400e;
+}
+
+.badge-done {
+    background-color: #d1fae5; /* Hijau muda */
+    color: #065f46;
+}
+
+/* --- UPDATE CSS: KARTU BUKU FULL COVER --- */
+
+/* Wrapper Kartu Utama */
+.book-card-small {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.book-card-small:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+/* Wrapper Gambar (Area Abu-abu) */
+.book-cover-small-wrapper {
+    height: 240px; /* Tinggi area gambar */
+    width: 100%;
+    background-color: #f1f5f9; /* Warna background abu muda */
+    display: flex;
+    align-items: center;   /* Tengahkan vertikal */
+    justify-content: center; /* Tengahkan horizontal */
+    padding: 15px; /* Jarak agar buku tidak nempel pinggir */
+    position: relative;
+}
+
+/* Gambar Buku (Full Utuh) */
+.book-cover-small {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain; /* KUNCI: Gambar utuh tidak terpotong */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15); /* Bayangan di bukunya agar timbul */
+    border-radius: 4px;
+}
+
+/* Area Teks di Bawah */
+.card-body-small {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title-small {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 4px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* Batasi 2 baris */
+    line-clamp: 2;         /* Properti standar */
+    overflow: hidden;
+}
+
+
+.card-author-small {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-bottom: 12px;
+}
+
+/* Badge Stok */
+.badge-overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 0.65rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: rgba(255, 255, 255, 0.95) !important;
+    color: #0f172a !important;
+    font-weight: 700;
+    z-index: 5;
+}
+
+/* Tombol Tambah */
+.add-card-small {
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    background-color: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 380px; /* Samakan tinggi dengan kartu buku */
+    cursor: pointer;
+    transition: 0.3s;
+    color: #64748b;
+}
+
+.add-card-small:hover {
+    border-color: var(--primary-blue);
+    background-color: #fff;
+    color: var(--primary-blue);
+}
+
+
+/* ==========================================
+   STYLE KHUSUS UNTUK ABOUT_US.HTML
+   TEMA: HIJAU & KUNING (DITAMBAHKAN DI BAWAH)
+   ========================================== */
+
+.main-header {
+    background-color: #2d5a27; /* Hijau Tua */
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.logo {
+    color: #fdd835; /* Kuning Cerah */
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.team-nav {
+    display: flex;
+    gap: 15px;
+}
+
+.team-nav .nav-link {
+    text-decoration: none;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.team-nav .nav-link:hover {
+    background-color: #fdd835;
+    color: #2d5a27;
+}
+
+.team-nav .nav-link.active {
+    background-color: #fdd835;
+    color: #2d5a27;
+    font-weight: bold;
+}
+
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.profile-card {
+    background: white;
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    border: 3px solid #2d5a27;
+}
+
+.text-content {
+    padding: 50px;
+    flex: 1;
+}
+
+.role-text-top {
+    color: #2d5a27;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.member-name {
+    font-size: 2.5rem;
+    margin: 0;
+    color: #222;
+}
+
+.member-nim {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+.member-role {
+    display: inline-block;
+    background-color: #fdd835;
+    color: #2d5a27;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.member-description {
+    line-height: 1.6;
+    color: #555;
+}
+
+.member-photo {
+    width: 350px;
+    object-fit: cover;
+    background-color: #2d5a27;
+    border-left: 5px solid #fdd835;
+}
+
+@media (max-width: 768px) {
+    .profile-card { flex-direction: column-reverse; }
+    .member-photo { width: 100%; height: 300px; border-left: none; }
+    .text-content { padding: 30px; }
+}

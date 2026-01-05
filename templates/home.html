@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="hero-section position-relative overflow-hidden d-flex align-items-center">
+    <div class="container position-relative z-2">
+        <div class="row align-items-center">
+
+            <div class="col-lg-6 mb-5 mb-lg-0 text-white" data-aos="fade-right">
+                <h1 class="hero-title fw-extra-bold mb-3">
+                    Sistem Perpustakaan <br> Digital Perpus-Syr
+                </h1>
+
+                <p class="hero-text mb-4 opacity-75 lead">
+                    Perpus-Syr memudahkan pengelolaan koleksi buku dan
+                    membantu anggota menemukan buku yang mereka butuhkan
+                    dengan cepat dan praktis.
+                </p>
+
+                <div class="hero-buttons">
+                    <a href="{{ url_for('register') }}" class="btn btn-primary-custom btn-lg p-3 px-4 me-3">
+                        Daftar Menjadi Anggota
+                        <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-6 text-center" data-aos="fade-left" data-aos-delay="200">
+                <img src="{{ url_for('static', filename='img/hero-img.png') }}"
+                     alt="Ilustrasi Perpustakaan Digital"
+                     class="img-fluid hero-img"
+                     loading="lazy">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="custom-shape-divider-bottom">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86
+                     82.39-16.72,168.19-17.73,250.45-.39
+                     C823.78,31,906.67,72,985.66,92.83
+                     c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35
+                     A600.21,600.21,0,0,0,321.39,56.44Z"
+                  class="shape-fill"></path>
+        </svg>
+    </div>
+</section>
+
+<section class="about-us-section py-5 bg-white">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            
+            <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+                <h2 class="display-5 fw-bold text-dark mb-3 position-relative d-inline-block">
+                    Tentang <br> Perpus-Syr
+                    <span class="position-absolute start-0 bottom-0 w-100 bg-warning"
+                          style="height: 12px; opacity: 0.4; transform: translateY(-5px); z-index: -1;">
+                    </span>
+                </h2>
+                <p class="lead text-muted mb-4 fs-6">
+                    Perpus-Syr adalah platform perpustakaan digital modern yang dirancang untuk menjembatani kesenjangan antara pembaca dan ilmu pengetahuan. Kami berkomitmen untuk mempermudah akses literasi bagi semua kalangan melalui teknologi yang efisien dan transparan.
+                </p>
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="p-3 bg-white shadow-sm rounded border-start border-primary border-4">
+                            <h6 class="fw-bold mb-2"><i class="fas fa-eye text-primary me-2"></i>Visi</h6>
+                            <p class="small text-muted mb-0">Menjadi pusat literasi digital yang inovatif dan terpercaya bagi masyarakat.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 bg-white shadow-sm rounded border-start border-warning border-4">
+                            <h6 class="fw-bold mb-2"><i class="fas fa-bullseye text-warning me-2"></i>Misi</h6>
+                            <p class="small text-muted mb-0">Memberikan kemudahan akses koleksi buku secara cepat dan praktis.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 text-center" data-aos="fade-left" data-aos-delay="200">
+                <div class="position-relative d-inline-block">
+                    <img src="{{ url_for('static', filename='img/about-us2.png') }}" 
+                         alt="Tentang Kami" 
+                         class="img-fluid rounded-4"
+                         style="max-height: 400px; object-fit: cover;">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="feature-section bg-white py-5 position-relative z-2">
+    <div class="container py-5">
+        <div class="row align-items-center">
+
+            <div class="col-lg-7 text-center mb-4 mb-lg-0"
+                 data-aos="fade-right" data-aos-delay="200">
+                <img src="{{ url_for('static', filename='img/project-img.png') }}"
+                     alt="Manajemen Data Buku"
+                     class="img-fluid"
+                     loading="lazy">
+            </div>
+
+            <div class="col-lg-5" data-aos="fade-left">
+                <h2 class="display-5 fw-bold text-dark mb-3 position-relative d-inline-block">
+                    Kelola <br> Data Buku
+                    <span class="position-absolute start-0 bottom-0 w-100 bg-warning"
+                          style="height: 12px; opacity: 0.4; transform: translateY(-5px); z-index: -1;">
+                    </span>
+                </h2>
+
+                <p class="lead text-muted mb-4 fs-6">
+                    Admin dapat menambahkan, mengedit, dan menghapus data buku
+                    dengan tampilan yang rapi dan mudah digunakan,
+                    sehingga pengelolaan koleksi menjadi lebih efisien.
+                </p>
+
+                <a href="{{ url_for('login') }}" class="btn btn-primary-custom px-4 py-2">
+                    Masuk ke Sistem
+                    <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="work-together-section bg-white py-5">
+    <div class="container py-5">
+        <div class="row align-items-center">
+
+            <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
+                <h2 class="display-5 fw-bold text-dark mb-3 position-relative d-inline-block">
+                    Akses Buku <br> untuk Anggota
+                    <span class="position-absolute start-0 bottom-0 w-100 bg-warning"
+                          style="height: 12px; opacity: 0.4; transform: translateY(-5px); z-index: -1;">
+                    </span>
+                </h2>
+
+                <p class="lead text-muted mb-4 fs-6">
+                    Anggota perpustakaan dapat melihat daftar buku,
+                    mengetahui ketersediaan stok, dan memilih buku
+                    yang tersedia tanpa proses yang rumit.
+                </p>
+
+                <a href="{{ url_for('login') }}" class="btn btn-primary-custom px-4 py-2">
+                    Lihat Koleksi Buku
+                    <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+
+            <div class="col-lg-6 text-center" data-aos="fade-left">
+                <img src="{{ url_for('static', filename='img/work-img.png') }}"
+                     alt="Akses Buku untuk Anggota"
+                     class="img-fluid"
+                     style="max-height: 500px;"
+                     loading="lazy">
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Profile - {{ active_member.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo">
+            <span class="logo-lightning">⚡⚡</span> MY TEAM
+        </div>
+        <nav class="team-nav">
+            {% for member in members %}
+            <a href="{{ url_for('member_profile', member_id=member.id) }}" 
+               class="nav-link {% if member.id == active_member.id %}active{% endif %}">
+                {{ member.name.split(' ')[0] }} 
+            </a>
+            {% endfor %}
+            
+            <a href="{{ url_for('member_area') }}" class="nav-link" style="border: 1px solid #fdd835; margin-left: 10px;">Kembali</a>
+        </nav>
+    </header>
+
+    <div class="profile-container">
+        <div class="profile-card">
+            
+            <div class="text-content">
+                <p class="role-text-top">CLOUD COMPUTING PROJECT</p>
+
+                <h2 class="member-name">{{ active_member.name }}</h2>
+                
+                <p class="member-nim">NIM: {{ active_member.nim }}</p>
+                
+                <p class="member-role">{{ active_member.role }}</p>
+
+                <p class="member-description">{{ active_member.description }}</p>
+            </div>
+            
+            <img src="{{ url_for('static', filename='images/' + active_member.image) }}" 
+                 alt="{{ active_member.name }}" 
+                 class="member-photo"
+                 onerror="this.src='https://via.placeholder.com/350x500?text=No+Photo'">
+
+        </div>
+    </div>
+
+</body>
+</html>

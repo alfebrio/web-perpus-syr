@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Member | Perpus-Syr</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-body">
+
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-book-reader text-success me-2"></i> Perpus-Syr
+        </div>
+
+        <nav class="nav flex-column">
+            <small class="text-uppercase text-muted fw-bold mb-3 ms-3" style="font-size: 11px;">Menu Member</small>
+            
+            <a class="nav-item active" href="#">
+                <i class="fas fa-th-large"></i> Dashboard Saya
+            </a>
+            <a class="nav-item" href="{{ url_for('daftar_buku_member') }}">
+                <i class="fas fa-search"></i> Daftar Buku
+            </a>
+            <a class="nav-item" href="{{ url_for('member_denda') }}">
+                <i class="fas fa-money-bill-wave"></i> Denda
+            </a>
+            <a class="nav-item" href="#history">
+                <i class="fas fa-history"></i> Riwayat
+            </a>
+            
+            <small class="text-uppercase text-muted fw-bold mt-4 mb-3 ms-3" style="font-size: 11px;">Akun</small>
+            <a class="nav-item" href="{{ url_for('logout') }}" style="color: #dc3545;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        
+        <div class="dashboard-header-bg header-member">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="text-white-50 mb-1">Selamat Datang,</h5>
+                    <h2 class="fw-bold text-white">{{ nama_user }}</h2>
+                </div>
+                
+                <div class="d-flex align-items-center bg-white bg-opacity-25 rounded-pill px-3 py-2 text-white">
+                    <img src="https://ui-avatars.com/api/?name={{ nama_user }}&background=10b981&color=fff" class="rounded-circle me-2" width="35">
+                    <span class="fw-bold small">Member</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="stat-card-new">
+                        <div>
+                            <p class="text-muted mb-1 small fw-bold">Sedang Dipinjam</p>
+                            <h2 class="fw-bold text-dark mb-0">{{ stats.aktif }} <small class="fs-6 text-muted">Buku</small></h2>
+                        </div>
+                        <div class="stat-icon icon-bg-green">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="stat-card-new">
+                        <div>
+                            <p class="text-muted mb-1 small fw-bold">Total Riwayat</p>
+                            <h2 class="fw-bold text-dark mb-0">{{ stats.history }} <small class="fs-6 text-muted">Buku</small></h2>
+                        </div>
+                        <div class="stat-icon icon-bg-blue">
+                            <i class="fas fa-history"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="stat-card-new">
+                        <div>
+                            <p class="text-muted mb-1 small fw-bold">Status Denda</p>
+                            
+                            {% if stats.denda > 0 %}
+                                <h2 class="fw-bold text-danger mb-0">Rp {{ stats.denda_fmt }}</h2>
+                            {% else %}
+                                <h2 class="fw-bold text-success mb-0">Aman</h2>
+                            {% endif %}
+                            
+                        </div>
+                        <div class="stat-icon icon-bg-red">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0">Sedang Dipinjam</h5>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-borderless align-middle">
+                    <thead class="text-muted small text-uppercase" style="border-bottom: 1px solid #eee;">
+                        <tr>
+                            <th class="fw-bold ps-0">Judul Buku</th>
+                            <th class="fw-bold">Tanggal Pinjam</th>
+                            <th class="fw-bold">Tenggat Waktu</th>
+                            <th class="fw-bold text-end pe-0">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set status = namespace(ada_buku=false) %}
+
+                        {% for pinjam in peminjaman %}
+                            {% if pinjam.status == 'Dipinjam' %}
+                                {% set status.ada_buku = true %}
+                                
+                                <tr style="border-bottom: 1px solid #f9f9f9;">
+                                    <td class="py-3 ps-0 fw-bold text-dark">
+                                        <div class="d-flex align-items-center">
+                                            {% if pinjam.url_gambar %}
+                                                <img src="{{ pinjam.url_gambar }}" width="40" height="60" class="rounded me-3 shadow-sm" style="object-fit: cover;">
+                                            {% else %}
+                                                <div class="rounded me-3 bg-light d-flex align-items-center justify-content-center" style="width: 40px; height: 60px;">
+                                                    <i class="fas fa-book text-muted"></i>
+                                                </div>
+                                            {% endif %}
+                                            
+                                            <span>{{ pinjam.judul }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-muted">{{ pinjam.tgl_pinjam }}</td>
+                                    <td class="text-danger fw-bold">{{ pinjam.tenggat }}</td>
+                                    <td class="text-end pe-0">
+                                        <span class="badge badge-active px-3 py-2 rounded-pill" style="background-color: #fef3c7; color: #92400e;">
+                                            <i class="fas fa-clock me-1"></i> Aktif
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if not status.ada_buku %}
+                            <tr>
+                                <td colspan="4" class="text-center py-5 text-muted">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/7486/7486744.png" width="60" class="mb-3 opacity-50">
+                                    <p class="mb-0">Tidak ada buku yang sedang dipinjam.</p>
+                                    <a href="{{ url_for('daftar_buku_member') }}" class="btn btn-sm btn-link text-success">Cari Buku Sekarang</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <a id="history"></a>
+        <div class="content-card">
+            <h5 class="fw-bold mb-4 text-muted small text-uppercase">Riwayat Pengembalian Terakhir</h5>
+            
+            <div class="table-responsive">
+                <table class="table table-borderless align-middle">
+                    <thead class="bg-light text-muted small text-uppercase">
+                        <tr>
+                            <th class="ps-3 py-3 rounded-start">Judul Buku</th>
+                            <th class="py-3">Tanggal Pinjam</th>
+                            <th class="py-3">Tanggal Kembali</th> <th class="text-end pe-3 py-3 rounded-end">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set ada_riwayat = false %}
+                        {% for pinjam in peminjaman %}
+                            {% if pinjam.status == 'Dikembalikan' or pinjam.status == 'Selesai' %}
+                                {% set ada_riwayat = true %}
+                                <tr>
+                                    <td class="ps-3 py-3 fw-bold">{{ pinjam.judul }}</td>
+                                    <td class="text-muted">{{ pinjam.tgl_pinjam }}</td>
+                                    <td class="text-success">{{ pinjam.tenggat }}</td>
+                                    <td class="text-end pe-3">
+                                        <span class="badge badge-done rounded-pill px-3" style="background-color: #d1fae5; color: #065f46;">
+                                            Selesai
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if not ada_riwayat %}
+                            <tr>
+                                <td colspan="4" class="text-center py-4 text-muted">Belum ada riwayat peminjaman.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="text-center pb-4 text-muted small">
+            &copy; 2026 Perpus-Syr Member Area.
+        </div>
+
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Fungsi untuk scroll ke section history
+    function scrollToHistory() {
+        const historySection = document.getElementById('history');
+        if (historySection) {
+            // Scroll dengan offset untuk header
+            const offset = 80;
+            const elementPosition = historySection.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+            
+            // Highlight effect
+            historySection.style.transition = 'all 0.5s';
+            historySection.style.backgroundColor = '#f0f9ff';
+            historySection.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.2)';
+            
+            setTimeout(() => {
+                historySection.style.backgroundColor = '';
+                historySection.style.boxShadow = '';
+            }, 2000);
+        }
+    }
+    
+    // Fungsi untuk update active state di sidebar
+    function updateActiveNav() {
+        const hash = window.location.hash;
+        const navItems = document.querySelectorAll('.nav-item');
+        
+        // Hapus semua active class
+        navItems.forEach(item => {
+            item.classList.remove('active');
+        });
+        
+        // Set active berdasarkan hash atau default
+        if (hash === '#history') {
+            // Cari link yang href="#history"
+            const historyLink = document.querySelector('a.nav-item[href="#history"]');
+            if (historyLink) {
+                historyLink.classList.add('active');
+            }
+        } else {
+            // Default: Dashboard (link dengan href="#" atau tanpa href)
+            const dashboardLink = document.querySelector('a.nav-item[href="#"]');
+            if (dashboardLink) {
+                dashboardLink.classList.add('active');
+            }
+        }
+    }
+    
+    // Saat halaman pertama kali load
+    function initPage() {
+        // Cek jika URL mengandung #history
+        if (window.location.hash === '#history') {
+            // Scroll ke history section
+            setTimeout(scrollToHistory, 300);
+        }
+        
+        // Update active state di sidebar
+        updateActiveNav();
+    }
+    
+    // Handle klik pada link #history di halaman yang sama
+    document.addEventListener('click', function(e) {
+        const target = e.target.closest('a.nav-item[href="#history"]');
+        if (target) {
+            e.preventDefault();
+            
+            // Update active state
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            target.classList.add('active');
+            
+            // Scroll ke history
+            scrollToHistory();
+            
+            // Update URL hash
+            window.history.pushState(null, null, '#history');
+        }
+    });
+    
+    // Panggil inisialisasi
+    initPage();
+    
+    // Handle hash change (browser back/forward button)
+    window.addEventListener('hashchange', function() {
+        if (window.location.hash === '#history') {
+            scrollToHistory();
+            updateActiveNav();
+        } else {
+            updateActiveNav();
+        }
+    });
+});
+</script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

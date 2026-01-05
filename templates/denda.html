@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Denda | Perpus-Syr</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-body">
+
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-book-open"></i> Perpus-Syr
+        </div>
+
+        <nav class="nav flex-column">
+            <small class="text-uppercase text-muted fw-bold mb-3 ms-3" style="font-size: 11px;">Master Data</small>
+            
+            <a class="nav-item" href="{{ url_for('dashboard') }}">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a class="nav-item" href="#">
+                <i class="fas fa-book"></i> Data Buku
+            </a>
+            <a class="nav-item" href="#">
+                <i class="fas fa-users"></i> Anggota
+            </a>
+            <a class="nav-item" href="#">
+                <i class="fas fa-exchange-alt"></i> Peminjaman
+            </a>
+            
+            <small class="text-uppercase text-muted fw-bold mt-4 mb-3 ms-3" style="font-size: 11px;">Transaksi</small>
+            <a class="nav-item active" href="{{ url_for('denda') }}">
+                <i class="fas fa-money-bill-wave"></i> Denda
+            </a>
+            <a class="nav-item" href="#">
+                <i class="fas fa-history"></i> Riwayat
+            </a>
+            
+            <small class="text-uppercase text-muted fw-bold mt-4 mb-3 ms-3" style="font-size: 11px;">Akun</small>
+            <a class="nav-item" href="{{ url_for('logout') }}" style="color: #dc3545;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        
+        <div class="dashboard-header-bg">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="text-white-50 mb-1">Manajemen Denda</h5>
+                    <h2 class="fw-bold text-white">Data Denda Perpustakaan</h2>
+                </div>
+                
+                <div class="d-flex align-items-center bg-white bg-opacity-25 rounded-pill px-3 py-2 text-white">
+                    <img src="https://ui-avatars.com/api/?name={{ nama_user }}&background=random&color=fff" class="rounded-circle me-2" width="35">
+                    <span class="fw-bold small">{{ nama_user }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="stat-card-new">
+                        <div>
+                            <p class="text-muted mb-1 small fw-bold">Total Denda</p>
+                            <h2 class="fw-bold text-dark mb-0">Rp 275.000</h2>
+                        </div>
+                        <div class="stat-icon" style="background-color: #FCE7F3; color: #BE185D;">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="stat-card-new">
+                        <div>
+                            <p class="text-muted mb-1 small fw-bold">Belum Dibayar</p>
+                            <h2 class="fw-bold text-dark mb-0">Rp 125.000</h2>
+                        </div>
+                        <div class="stat-icon" style="background-color: #FEE2E2; color: #DC2626;">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="stat-card-new">
+                        <div>
+                            <p class="text-muted mb-1 small fw-bold">Sudah Dibayar</p>
+                            <h2 class="fw-bold text-dark mb-0">Rp 150.000</h2>
+                        </div>
+                        <div class="stat-icon" style="background-color: #DCFCE7; color: #15803D;">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="stat-card-new">
+                        <div>
+                            <p class="text-muted mb-1 small fw-bold">Jumlah Transaksi</p>
+                            <h2 class="fw-bold text-dark mb-0">24</h2>
+                        </div>
+                        <div class="stat-icon" style="background-color: #E0F2FE; color: #0077B6;">
+                            <i class="fas fa-receipt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0">Daftar Denda Anggota</h5>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary rounded-pill px-4" style="background-color: var(--accent-blue); border: none;" data-bs-toggle="modal" data-bs-target="#tambahDendaModal">
+                        <i class="fas fa-plus me-2"></i>Tambah Denda
+                    </button>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-light dropdown-toggle rounded-pill px-3" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-filter me-2"></i>Filter
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Semua Status</a></li>
+                            <li><a class="dropdown-item" href="#">Belum Dibayar</a></li>
+                            <li><a class="dropdown-item" href="#">Sudah Dibayar</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">30 Hari Terakhir</a></li>
+                            <li><a class="dropdown-item" href="#">Bulan Ini</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-borderless align-middle">
+                    <thead class="text-muted small text-uppercase" style="border-bottom: 1px solid #eee;">
+                        <tr>
+                            <th class="fw-bold ps-0">Nama Anggota</th>
+                            <th class="fw-bold">Judul Buku</th>
+                            <th class="fw-bold">Tanggal Denda</th>
+                            <th class="fw-bold">Keterlambatan</th>
+                            <th class="fw-bold">Jumlah Denda</th>
+                            <th class="fw-bold">Status</th>
+                            <th class="fw-bold text-end pe-0">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Contoh Data 1 -->
+                        <tr style="border-bottom: 1px solid #f9f9f9;">
+                            <td class="py-3 ps-0">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-light rounded-circle p-2 me-3 text-center" style="width:40px; height:40px;">
+                                        <i class="fas fa-user text-muted"></i>
+                                    </div>
+                                    <div>
+                                        <span class="fw-bold text-dark d-block">Ahmad Fauzi</span>
+                                        <small class="text-muted">ID: AGT-2023-001</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-dark fw-medium">Pemrograman Python Dasar</td>
+                            <td>
+                                <span class="text-muted">15 Mar 2024</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-warning bg-opacity-10 text-warning fw-normal px-3 py-2 rounded-pill">
+                                    5 Hari
+                                </span>
+                            </td>
+                            <td>
+                                <span class="fw-bold text-dark">Rp 25.000</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-danger bg-opacity-10 text-danger px-3 py-2 rounded-pill">
+                                    <i class="fas fa-clock me-1"></i> Belum Dibayar
+                                </span>
+                            </td>
+                            <td class="text-end pe-0">
+                                <button class="btn btn-sm btn-light text-success me-1" data-bs-toggle="modal" data-bs-target="#bayarDendaModal">
+                                    <i class="fas fa-money-check-alt"></i>
+                                </button>
+                                <button class="btn btn-sm btn-light text-primary me-1" data-bs-toggle="modal" data-bs-target="#editDendaModal">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-light text-danger" onclick="return confirm('Hapus data denda ini?')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Contoh Data 2 -->
+                        <tr style="border-bottom: 1px solid #f9f9f9;">
+                            <td class="py-3 ps-0">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-light rounded-circle p-2 me-3 text-center" style="width:40px; height:40px;">
+                                        <i class="fas fa-user text-muted"></i>
+                                    </div>
+                                    <div>
+                                        <span class="fw-bold text-dark d-block">Siti Nurhaliza</span>
+                                        <small class="text-muted">ID: AGT-2023-012</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-dark fw-medium">Struktur Data & Algoritma</td>
+                            <td>
+                                <span class="text-muted">10 Mar 2024</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-warning bg-opacity-10 text-warning fw-normal px-3 py-2 rounded-pill">
+                                    3 Hari
+                                </span>
+                            </td>
+                            <td>
+                                <span class="fw-bold text-dark">Rp 15.000</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">
+                                    <i class="fas fa-check me-1"></i> Sudah Dibayar
+                                </span>
+                            </td>
+                            <td class="text-end pe-0">
+                                <button class="btn btn-sm btn-light text-primary me-1" data-bs-toggle="modal" data-bs-target="#editDendaModal">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-light text-danger" onclick="return confirm('Hapus data denda ini?')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Contoh Data 3 -->
+                        <tr style="border-bottom: 1px solid #f9f9f9;">
+                            <td class="py-3 ps-0">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-light rounded-circle p-2 me-3 text-center" style="width:40px; height:40px;">
+                                        <i class="fas fa-user text-muted"></i>
+                                    </div>
+                                    <div>
+                                        <span class="fw-bold text-dark d-block">Budi Santoso</span>
+                                        <small class="text-muted">ID: AGT-2023-008</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-dark fw-medium">Database Management System</td>
+                            <td>
+                                <span class="text-muted">20 Mar 2024</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-warning bg-opacity-10 text-warning fw-normal px-3 py-2 rounded-pill">
+                                    7 Hari
+                                </span>
+                            </td>
+                            <td>
+                                <span class="fw-bold text-dark">Rp 35.000</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-danger bg-opacity-10 text-danger px-3 py-2 rounded-pill">
+                                    <i class="fas fa-clock me-1"></i> Belum Dibayar
+                                </span>
+                            </td>
+                            <td class="text-end pe-0">
+                                <button class="btn btn-sm btn-light text-success me-1" data-bs-toggle="modal" data-bs-target="#bayarDendaModal">
+                                    <i class="fas fa-money-check-alt"></i>
+                                </button>
+                                <button class="btn btn-sm btn-light text-primary me-1" data-bs-toggle="modal" data-bs-target="#editDendaModal">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-light text-danger" onclick="return confirm('Hapus data denda ini?')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Data lainnya bisa ditambahkan di sini -->
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="text-center pb-4 text-muted small">
+            &copy; 2025 Perpus-Syr Dashboard. All rights reserved.
+        </div>
+
+    </div>
+
+    <!-- Modal Tambah Denda -->
+    <div class="modal fade" id="tambahDendaModal" tabindex="-1" aria-labelledby="tambahDendaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="tambahDendaModalLabel">
+                        <i class="fas fa-plus-circle me-2"></i>Tambah Denda Baru
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formTambahDenda">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium">Nama Anggota</label>
+                                <select class="form-select">
+                                    <option selected disabled>Pilih anggota...</option>
+                                    <option value="1">Ahmad Fauzi (AGT-2023-001)</option>
+                                    <option value="2">Siti Nurhaliza (AGT-2023-012)</option>
+                                    <option value="3">Budi Santoso (AGT-2023-008)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium">Judul Buku</label>
+                                <select class="form-select">
+                                    <option selected disabled>Pilih buku...</option>
+                                    <option value="1">Pemrograman Python Dasar</option>
+                                    <option value="2">Struktur Data & Algoritma</option>
+                                    <option value="3">Database Management System</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-medium">Tanggal Pinjam</label>
+                                <input type="date" class="form-control" value="2024-03-10">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-medium">Tanggal Kembali</label>
+                                <input type="date" class="form-control" value="2024-03-15">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-medium">Keterlambatan (Hari)</label>
+                                <input type="number" class="form-control" value="5" min="0">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium">Jumlah Denda (Rp)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+                                    <input type="number" class="form-control" value="25000" min="0">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium">Status</label>
+                                <select class="form-select">
+                                    <option value="belum">Belum Dibayar</option>
+                                    <option value="sudah">Sudah Dibayar</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-medium">Keterangan</label>
+                                <textarea class="form-control" rows="3" placeholder="Tambahkan catatan jika diperlukan..."></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary rounded-pill px-4" style="background-color: var(--primary-blue); border: none;">Simpan Denda</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Bayar Denda -->
+    <div class="modal fade" id="bayarDendaModal" tabindex="-1" aria-labelledby="bayarDendaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold text-success" id="bayarDendaModalLabel">
+                        <i class="fas fa-money-check-alt me-2"></i>Konfirmasi Pembayaran Denda
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Apakah Anda yakin ingin menandai denda ini sebagai <strong>SUDAH DIBAYAR</strong>?</p>
+                    <div class="alert alert-info">
+                        <div class="d-flex">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <div>
+                                <small><strong>Detail Denda:</strong></small><br>
+                                <small>Nama: <strong>Ahmad Fauzi</strong></small><br>
+                                <small>Jumlah: <strong>Rp 25.000</strong></small><br>
+                                <small>Buku: <strong>Pemrograman Python Dasar</strong></small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Tanggal Pembayaran</label>
+                        <input type="date" class="form-control" value="{{ tanggal_hari_ini }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-medium">Metode Pembayaran</label>
+                        <select class="form-select">
+                            <option value="tunai">Tunai</option>
+                            <option value="transfer">Transfer Bank</option>
+                            <option value="ewallet">E-Wallet</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-success rounded-pill px-4">Konfirmasi Pembayaran</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Denda -->
+    <div class="modal fade" id="editDendaModal" tabindex="-1" aria-labelledby="editDendaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="editDendaModalLabel">
+                        <i class="fas fa-edit me-2"></i>Edit Data Denda
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditDenda">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium">Nama Anggota</label>
+                                <input type="text" class="form-control" value="Ahmad Fauzi" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium">Judul Buku</label>
+                                <input type="text" class="form-control" value="Pemrograman Python Dasar" readonly>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-medium">Tanggal Denda</label>
+                                <input type="date" class="form-control" value="2024-03-15">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-medium">Keterlambatan (Hari)</label>
+                                <input type="number" class="form-control" value="5" min="0">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-medium">Jumlah Denda (Rp)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+                                    <input type="number" class="form-control" value="25000" min="0">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium">Status</label>
+                                <select class="form-select">
+                                    <option value="belum">Belum Dibayar</option>
+                                    <option value="sudah" selected>Sudah Dibayar</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium">Tanggal Pembayaran</label>
+                                <input type="date" class="form-control" value="2024-03-20">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-medium">Keterangan</label>
+                                <textarea class="form-control" rows="3">Denda untuk keterlambatan pengembalian buku</textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary rounded-pill px-4" style="background-color: var(--primary-blue); border: none;">Update Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set tanggal hari ini untuk input tanggal
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            const dateInputs = document.querySelectorAll('input[type="date"]');
+            dateInputs.forEach(input => {
+                if (!input.value) {
+                    input.value = today;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

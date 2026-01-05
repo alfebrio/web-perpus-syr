@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perpus-Syr | Whitespace Style</title>
+    
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- adalah -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- icon browser -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/png">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-custom-blue fixed-top py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3 d-flex align-items-center" href="#">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" height="30" class="me-2">
+                Perpus-Syr
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item mx-2"><a class="nav-link" href="#">Products <i class="fas fa-chevron-down fs-xs"></i></a></li>
+                    <li class="nav-item mx-2"><a class="nav-link" href="#">Solutions <i class="fas fa-chevron-down fs-xs"></i></a></li>
+                    <li class="nav-item mx-2"><a class="nav-link" href="#">Resources <i class="fas fa-chevron-down fs-xs"></i></a></li>
+                    <li class="nav-item mx-2"><a class="nav-link" href="#">Pricing <i class="fas fa-chevron-down fs-xs"></i></a></li>
+                </ul>
+                <div class="d-flex gap-3 d-lg-none mt-3">
+                    <a href="{{ url_for('login') }}" class="btn btn-login px-4">Login</a>
+                    <a href="{{ url_for('register') }}" class="btn btn-primary-custom w-100">Try Free</a>
+                </div>
+            </div>
+
+            <div class="d-none d-lg-flex gap-3">
+                <a href="{{ url_for('login') }}" class="btn btn-login px-4">Login</a>
+                <a href="{{ url_for('register') }}" class="btn btn-primary-custom px-4"> Daftar Sekarang <i class="fas fa-arrow-right ms-2"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 50,
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Perpus-Syr</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="login-body">
+
+    <div class="auth-card">
+        <div class="mb-4">
+            <h1 class="logo-text">Perpus-Syr.</h1>
+            <p class="text-muted small">Silakan login menggunakan Google.</p>
+        </div>
+
+        <button id="btnGoogle" class="btn-google-custom">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="24" alt="G">
+            <span>Masuk dengan Google</span>
+        </button>
+
+        <div id="message" class="small mt-2"></div>
+
+        <div class="mt-4 pt-4 border-top">
+            <a href="{{ url_for('home') }}" class="small text-muted text-decoration-none fw-bold">
+                &larr; Kembali ke Home
+            </a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // --- PASTE CONFIG ANDA DI SINI (Dari Firebase Console) ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyCDwrHxMzicO0n1RisxwEme0JGnOrYeZwY",
+            authDomain: "perpus-syahroni.firebaseapp.com",
+            databaseURL: "https://perpus-syahroni-default-rtdb.firebaseio.com",
+            projectId: "perpus-syahroni",
+            storageBucket: "perpus-syahroni.firebasestorage.app",
+            messagingSenderId: "82271980314",
+            appId: "1:82271980314:web:0d562b187893c35f5cbaa3"
+            };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        document.getElementById('btnGoogle').addEventListener('click', () => {
+            const msg = document.getElementById('message');
+            msg.innerHTML = '<span class="text-primary fw-bold">Menghubungkan...</span>';
+
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    const user = result.user;
+                    msg.innerHTML = '<span class="text-success fw-bold">Login berhasil! Mengalihkan...</span>';
+                    
+                    // Kirim Token ke Backend Python
+                    user.getIdToken().then((token) => {
+                        fetch('/google_auth', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ token: token })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                window.location.href = data.redirect_url;
+                            } else {
+                                msg.innerHTML = '<span class="text-danger">Gagal verifikasi server.</span>';
+                            }
+                        });
+                    });
+                })
+                .catch((error) => {
+                    console.error(error);
+                    msg.innerHTML = '<span class="text-danger">Error: ' + error.message + '</span>';
+                });
+        });
+    </script>
+</body>
+</html>

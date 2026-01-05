@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card card-ws p-4">
+                <h4 class="fw-bold mb-4 text-center">Informasi Buku</h4>
+                <form action="{{ url_for('tambah_buku') if request.endpoint == 'tambah_buku' else url_for('update_buku', id=id) }}" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">JUDUL BUKU</label>
+                        <input type="text" name="judul" class="form-control form-control-lg fs-6" value="{{ buku.judul if buku else '' }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">NAMA PENULIS</label>
+                        <input type="text" name="penulis" class="form-control form-control-lg fs-6" value="{{ buku.penulis if buku else '' }}" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold">JUMLAH STOK</label>
+                        <input type="number" name="stok" class="form-control form-control-lg fs-6" value="{{ buku.stok if buku else '' }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary-ws w-100 py-3 rounded-3">Simpan Data Buku</button>
+                    <a href="/daftar-buku" class="btn btn-link w-100 text-muted mt-2 text-decoration-none">Kembali</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

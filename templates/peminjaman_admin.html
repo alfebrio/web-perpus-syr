@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Kelola Peminjaman | Admin Perpus-Syr</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-body">
+
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-book-open text-primary me-2"></i> Perpus-Syr
+        </div>
+        <nav class="nav flex-column">
+            <small class="text-uppercase text-muted fw-bold mb-3 ms-3" style="font-size: 11px;">Master Data</small>
+            <a class="nav-item" href="{{ url_for('dashboard') }}">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a class="nav-item" href="{{ url_for('data_buku') }}">
+                <i class="fas fa-book"></i> Data Buku
+            </a>
+            <a class="nav-item active" href="#">
+                <i class="fas fa-exchange-alt"></i> Pinjaman
+            </a>
+
+            <small class="text-uppercase text-muted fw-bold mt-4 mb-3 ms-3" style="font-size: 11px;">Keuangan</small>
+            <a class="nav-item" href="{{ url_for('admin_denda_page') }}">
+                <i class="fas fa-money-bill-wave"></i> Kelola Denda
+            </a>
+            <small class="text-uppercase text-muted fw-bold mt-4 mb-3 ms-3" style="font-size: 11px;">Akun</small>
+            <a class="nav-item" href="{{ url_for('logout') }}" style="color: #dc3545;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="dashboard-header-bg">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="text-white-50 mb-1">Sirkulasi</h5>
+                    <h2 class="fw-bold text-white">Kelola Peminjaman</h2>
+                </div>
+                <div class="d-flex align-items-center bg-white bg-opacity-25 rounded-pill px-3 py-2 text-white">
+                    <span class="fw-bold small">{{ nama_user }} (Admin)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid px-4" style="margin-top: -60px; position: relative; z-index: 10;">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">Daftar Peminjaman Aktif</h5>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Nama Peminjam</th>
+                                    <th>Judul Buku</th>
+                                    <th>Tanggal Pinjam</th>
+                                    <th>Tenggat</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% set ada_data = false %}
+                                {% if peminjaman %}
+                                    {% for id, data in peminjaman.items() %}
+                                        {% if data.status == 'Dipinjam' %}
+                                        {% set ada_data = true %}
+                                        <tr>
+                                            <td class="fw-bold">{{ data.nama_peminjam }}</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    {% if data.url_gambar %}
+                                                    <img src="{{ data.url_gambar }}" width="30" class="rounded me-2">
+                                                    {% endif %}
+                                                    {{ data.judul }}
+                                                </div>
+                                            </td>
+                                            <td>{{ data.tgl_pinjam }}</td>
+                                            <td class="text-danger fw-bold">{{ data.tenggat }}</td>
+                                            <td>
+                                                <span class="badge bg-warning text-dark px-3 rounded-pill">Dipinjam</span>
+                                            </td>
+                                            <td class="text-end">
+                                                <button class="btn btn-primary btn-sm rounded-3 px-3 fw-bold" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#modalKembali{{ id }}">
+                                                    <i class="fas fa-check me-1"></i> Kembalikan
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+
+                                {% if not ada_data %}
+                                <tr>
+                                    <td colspan="6" class="text-center py-5 text-muted">
+                                        Tidak ada transaksi peminjaman aktif saat ini.
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if peminjaman %}
+        {% for id, data in peminjaman.items() %}
+        {% if data.status == 'Dipinjam' %}
+        <div class="modal fade" id="modalKembali{{ id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header border-0 pb-0">
+                        <h5 class="modal-title fw-bold">Konfirmasi Pengembalian</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-muted mb-2">Konfirmasi buku diterima kembali:</p>
+                        <div class="alert alert-light border">
+                            <div class="fw-bold text-dark">{{ data.judul }}</div>
+                            <small class="text-muted">Peminjam: {{ data.nama_peminjam }}</small>
+                        </div>
+                        <p class="small text-success mb-0"><i class="fas fa-info-circle me-1"></i> Stok buku akan otomatis bertambah +1.</p>
+                    </div>
+                    <div class="modal-footer border-0 pt-0">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                        <form action="{{ url_for('proses_kembali', id=id) }}" method="POST">
+                            <button type="submit" class="btn btn-primary px-4 fw-bold">Ya, Proses Kembali</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
