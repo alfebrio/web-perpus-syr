@@ -4,7 +4,7 @@
 Repositori ini berisi project aplikasi web perpustakaan digital yang dirancang untuk memudahkan pengelolaan serta akses koleksi perpustakaan secara daring.
 
 Aplikasi ini dikembangkan sebagai proyek aplikasi web dan telah **dideploy pada platform Microsoft Azure**, sehingga dapat diakses secara publik melalui internet.
-[Live Demo](https://web-perpus-syr-dyg3cxh6euexckd6.southeastasia-01.azurewebsites.net/).
+[Live Demo](https://web-perpus-syr-dyg3cxh6euexckd6.southeastasia-01.azurewebsites.net/)
 
 Project ini bertujuan untuk menunjukkan pemahaman konsep:
 - Pengembangan aplikasi web
