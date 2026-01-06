@@ -31,14 +31,12 @@ Proyek ini bertujuan untuk menunjukkan pemahaman konsep:
 - Akses publik melalui cloud
 
 ## Komponen
-```text
-Bagian	Teknologi
+| Bagian      | Teknologi       |
 |-------------|-----------------|
 | Backend     | Flask           |
 | Frontend    | HTML, CSS       |
 | Database    | Firebase        |
 | Deployment  | Microsoft Azure |
-```
 
 ## Deployment
 Aplikasi ini telah dideploy menggunakan layanan Microsoft Azure Web App dengan detail:
@@ -51,4 +49,5 @@ Repositori ini digunakan sebagai final project mata kuliah Cloud Computing.
 Pengembangan lebih lanjut dapat dilakukan sesuai kebutuhan fitur dan skalabilitas sistem.
 
 © 2026 Sistem Perpustakaan Digital Publik SYR
+
 
