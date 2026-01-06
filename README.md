@@ -3,7 +3,7 @@
 ## Deskripsi
 Repositori ini berisi project aplikasi web perpustakaan digital yang dirancang untuk memudahkan pengelolaan serta akses koleksi perpustakaan secara daring.
 
-Aplikasi ini dikembangkan sebagai proyek aplikasi web dan telah **dideploy pada platform Microsoft Azure**, sehingga dapat diakses secara publik melalui internet.
+Aplikasi ini dikembangkan sebagai proyek aplikasi web dan telah dideploy pada platform **Microsoft Azure**, sehingga dapat diakses secara publik melalui internet.
 [Live Demo](https://web-perpus-syr-dyg3cxh6euexckd6.southeastasia-01.azurewebsites.net/)
 
 Project ini bertujuan untuk menunjukkan pemahaman konsep:
@@ -15,11 +15,12 @@ Project ini bertujuan untuk menunjukkan pemahaman konsep:
 ## Struktur
 ```text
 .
-├── static/           # File CSS, JavaScript, dan aset statis
-├── templates/        # Template tampilan web
-├── app.py            # File utama aplikasi
-├── database/         # Konfigurasi atau skrip database
-└── README.md         # Dokumentasi
+├── static/            # File CSS dan aset statis
+├── templates/         # Template tampilan web
+├── app.py             # File utama aplikasi
+├── requirements.txt   # Daftar library yang diperlukan
+├── Procfile           # Memberitahu platform deployment cara menjalankan aplikasi
+└── README.md          # Dokumentasi
 ```
 
 ## Fitur
